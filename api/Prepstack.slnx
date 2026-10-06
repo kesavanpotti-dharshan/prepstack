@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Prepstack.Api/Prepstack.Api.csproj" />
+    <Project Path="src/Prepstack.Application/Prepstack.Application.csproj" />
+    <Project Path="src/Prepstack.Domain/Prepstack.Domain.csproj" />
+    <Project Path="src/Prepstack.Infrastructure/Prepstack.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Prepstack.Api.IntegrationTests/Prepstack.Api.IntegrationTests.csproj" />
+    <Project Path="tests/Prepstack.Application.Tests/Prepstack.Application.Tests.csproj" />
+    <Project Path="tests/Prepstack.Domain.Tests/Prepstack.Domain.Tests.csproj" />
+  </Folder>
+</Solution>

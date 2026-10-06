@@ -1,0 +1,18 @@
+# .NET
+api/**/bin/
+api/**/obj/
+*.user
+
+# Node (per-package .gitignore in web/ covers node_modules/dist)
+**/node_modules/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+
+# Editor / OS
+.vs/
+.idea/
+.DS_Store

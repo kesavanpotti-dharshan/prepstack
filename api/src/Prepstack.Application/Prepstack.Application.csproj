@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Prepstack.Domain\Prepstack.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
