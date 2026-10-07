@@ -6,7 +6,7 @@ namespace Prepstack.Api.IntegrationTests;
 
 public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly MongoDbContainer _mongoContainer = new MongoDbBuilder("mongo:7.0").Build();
+    private readonly MongoDbContainer _mongoContainer = new MongoDbBuilder("mongo:7.0").WithReplicaSet().Build();
 
     public Task InitializeAsync() => _mongoContainer.StartAsync();
 
@@ -20,5 +20,7 @@ public sealed class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     {
         builder.UseSetting("Mongo:ConnectionString", _mongoContainer.GetConnectionString());
         builder.UseSetting("Mongo:DatabaseName", "prepstack-tests");
+        builder.UseSetting("Auth:Jwt:SigningKey", "integration-test-signing-key-at-least-32-bytes-long");
+        builder.UseSetting("Auth:RateLimit:PermitLimit", "1000");
     }
 }

@@ -1,11 +1,63 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
-import App from './App'
+import userEvent from '@testing-library/user-event'
+import { createBrowserRouter, RouterProvider } from 'react-router'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { tokenStore } from '../shared/lib/token-store'
+import { createFakeAccessToken } from '../shared/testing/fake-jwt'
+import { AppProviders } from './providers'
+import { routes } from './router'
+
+function authResponse(accessToken: string) {
+  return new Response(JSON.stringify({ accessToken, accessTokenExpiresAt: '2030-01-01T00:00:00Z' }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
+}
+
+function renderAppAt(path: string) {
+  window.history.pushState({}, '', path)
+  // A fresh router per test avoids carrying navigation state from a previous test.
+  const router = createBrowserRouter(routes)
+  return render(
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>,
+  )
+}
 
 describe('App', () => {
-  it('renders the Prepstack heading', () => {
-    render(<App />)
+  beforeEach(() => {
+    tokenStore.set(null)
+  })
 
-    expect(screen.getByRole('heading', { name: 'Prepstack' })).toBeInTheDocument()
+  it('redirects an unauthenticated visitor to the login page', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(null, { status: 401 })))
+
+    renderAppAt('/')
+
+    expect(await screen.findByRole('heading', { name: 'Log in' })).toBeInTheDocument()
+
+    vi.unstubAllGlobals()
+  })
+
+  it('shows the authenticated layout after a successful silent refresh, and logging out returns to login', async () => {
+    const user = userEvent.setup()
+    const token = createFakeAccessToken({ sub: 'user-1', email: 'me@prepstack.dev' })
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(authResponse(token)) // silent refresh on load
+      .mockResolvedValueOnce(new Response(null, { status: 204 })) // logout
+    vi.stubGlobal('fetch', fetchMock)
+
+    renderAppAt('/')
+
+    expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument()
+    expect(screen.getByText('me@prepstack.dev')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Log out' }))
+
+    expect(await screen.findByRole('heading', { name: 'Log in' })).toBeInTheDocument()
+
+    vi.unstubAllGlobals()
   })
 })
