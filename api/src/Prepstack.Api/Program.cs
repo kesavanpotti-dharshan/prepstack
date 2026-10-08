@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Prepstack.Api.Auth;
 using Prepstack.Api.Common;
 using Prepstack.Api.Health;
+using Prepstack.Api.Topics;
 using Prepstack.Application;
 using Prepstack.Application.Auth;
 using Prepstack.Infrastructure;
@@ -103,6 +104,7 @@ app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 app.MapAuthEndpoints();
+app.MapTopicsEndpoints();
 
 app.Run();
 

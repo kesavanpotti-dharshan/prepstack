@@ -14,6 +14,10 @@ function authResponse(accessToken: string) {
   })
 }
 
+function jsonResponse(body: unknown) {
+  return new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } })
+}
+
 function renderAppAt(path: string) {
   window.history.pushState({}, '', path)
   // A fresh router per test avoids carrying navigation state from a previous test.
@@ -46,12 +50,13 @@ describe('App', () => {
     const fetchMock = vi
       .fn()
       .mockResolvedValueOnce(authResponse(token)) // silent refresh on load
+      .mockResolvedValueOnce(jsonResponse([])) // GET /topics (empty tree)
       .mockResolvedValueOnce(new Response(null, { status: 204 })) // logout
     vi.stubGlobal('fetch', fetchMock)
 
     renderAppAt('/')
 
-    expect(await screen.findByRole('heading', { name: /welcome back/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Topics' })).toBeInTheDocument()
     expect(screen.getByText('me@prepstack.dev')).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Log out' }))

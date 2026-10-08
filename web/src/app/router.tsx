@@ -2,8 +2,8 @@ import { createBrowserRouter, type RouteObject } from 'react-router'
 import { RequireAuth } from '../features/auth/components/RequireAuth'
 import { LoginPage } from '../features/auth/pages/LoginPage'
 import { RegisterPage } from '../features/auth/pages/RegisterPage'
+import { TopicsPage } from '../features/topics/pages/TopicsPage'
 import { AppLayout } from './layout/AppLayout'
-import { HomePage } from './pages/HomePage'
 
 export const routes: RouteObject[] = [
   { path: '/login', element: <LoginPage /> },
@@ -13,7 +13,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         element: <AppLayout />,
-        children: [{ path: '/', element: <HomePage /> }],
+        children: [{ path: '/', element: <TopicsPage /> }],
       },
     ],
   },

@@ -4,6 +4,7 @@ using Prepstack.Application.Common;
 using Prepstack.Infrastructure.Auth;
 using Prepstack.Infrastructure.Common;
 using Prepstack.Infrastructure.Mongo;
+using Prepstack.Infrastructure.Topics;
 
 namespace Prepstack.Infrastructure;
 
@@ -14,6 +15,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddMongo(configuration);
         services.AddSingleton<IIdGenerator, ObjectIdGenerator>();
         services.AddAuthInfrastructure();
+        services.AddTopicsInfrastructure();
 
         return services;
     }

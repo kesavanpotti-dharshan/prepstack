@@ -14,11 +14,12 @@ Claude Code works only on the **current phase**. Tick items as they merge.
 
 ## Phase 1 — Core bank (MVP, usable daily)
 - [x] Auth: register/login/refresh/logout with rotation + reuse detection
-- [ ] Topics CRUD + tree
+- [x] Topics CRUD + tree
 - [ ] Questions CRUD (flashcard, short, mcq, code) with markdown + code highlighting
 - [ ] List/filter/paginate questions; Atlas Search full-text
-- [ ] Web: topic tree, bank list, question editor
+- [ ] Web: bank list, question editor
 - [x] Web: auth pages (login/register), in-memory access token + silent refresh, protected routes, app layout with logout
+- [x] Web: topic tree (home screen) — create/edit/delete, nested subtopics
 
 ## Phase 2 — Study view
 - [ ] `/study` endpoint: topic + subtopics, starred filter
